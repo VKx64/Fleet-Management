@@ -17,7 +17,7 @@ const page = () => {
       // Authenticate with PocketBase
       await pb.collection("users").authWithPassword(email, password);
 
-      router.push("/dashboard");
+      router.push("/main");
       router.refresh();
     } catch (err) {
       setError(err.message || "Authentication failed");

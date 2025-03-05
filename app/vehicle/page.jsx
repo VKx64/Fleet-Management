@@ -1,12 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { pb, getCurrentUser } from "../../lib/pocketbase";
+import Drivers from "@/components/Drivers";
+import Fleets from "@/components/Fleets";
 
 const page = () => {
   const [drivers, setDrivers] = useState([]);
   const [fleets, setFleets] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedDriver, setSelectedDriver] = useState(null); // State to track selected driver
+  const [selectedDriver, setSelectedDriver] = useState(null);
 
   // Fetch drivers on page load
   useEffect(() => {
@@ -63,7 +65,7 @@ const page = () => {
             <div>No drivers assigned yet.</div>
           ) : (
             drivers.map((driver) => (
-              <DriverList
+              <Drivers
                 key={driver.id}
                 driver={driver}
                 isSelected={selectedDriver?.id === driver.id}
@@ -81,64 +83,10 @@ const page = () => {
           {selectedDriver && fleets.length === 0 ? (
             <div>No fleets assigned to this driver.</div>
           ) : (
-            fleets.map((fleet) => (
-              <DriverFleets key={fleet.id} fleet={fleet} />
-            ))
+            fleets.map((fleet) => <Fleets key={fleet.id} fleet={fleet} />)
           )}
         </div>
       </div>
-    </div>
-  );
-};
-
-const DriverList = ({ driver, isSelected, onSelect }) => {
-  const { id, name, avatar, phone, email } = driver;
-  const avatarUrl = `${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/drivers/${id}/${avatar}`;
-
-  return (
-    <div
-      className={`flex h-20 w-full cursor-pointer flex-row items-start justify-start gap-2 rounded-2xl py-2 pr-4 pl-2 ${
-        isSelected ? "bg-amber-400" : "bg-amber-200"
-      }`}
-      onClick={() => onSelect(driver)}
-    >
-      <div className="aspect-square h-full">
-        <img
-          src={avatarUrl}
-          alt="Driver"
-          className="h-full w-full rounded-xl object-cover"
-        />
-      </div>
-      <div className="flex flex-col justify-center">
-        <h1 className="text-xl whitespace-nowrap text-black">{name}</h1>
-        <p className="text-xs text-gray-600">{email}</p>
-        <p className="text-xs text-gray-600">+63 {phone}</p>
-      </div>
-    </div>
-  );
-};
-
-const DriverFleets = ({ fleet }) => {
-  const { plate, id, image } = fleet;
-  const imageUrl = `${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/fleets/${id}/${image}`;
-
-  return (
-    <div className="flex h-fit w-48 flex-col gap-2 bg-red-100 p-2 rounded-2xl overflow-y-scroll">
-      <div className="aspect-square w-full">
-        <img
-          src={imageUrl}
-          alt="Driver"
-          className="h-full w-full rounded-xl object-cover"
-        />
-      </div>
-
-      <h1 className="w-full bg-blue-500 text-center text-xl font-bold">
-        {plate}
-      </h1>
-
-      <button className="h-fit w-full rounded-lg bg-orange-400 px-4 py-2 text-base hover:bg-orange-300">
-        View Fleet
-      </button>
     </div>
   );
 };

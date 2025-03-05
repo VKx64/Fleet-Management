@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { pb, getCurrentUser } from "../../lib/pocketbase";
 import Drivers from "@/components/Drivers";
 import Fleets from "@/components/Fleets";
+import { Icon } from "@iconify/react";
 
 const page = () => {
   const [drivers, setDrivers] = useState([]);
@@ -57,7 +58,13 @@ const page = () => {
     <div className="flex h-[calc(100vh-56px)] w-full flex-row">
       {/* Left Side */}
       <div className="flex h-full w-1/3 flex-col gap-5 bg-red-300 p-5">
-        <h1 className="w-full text-2xl font-bold">Driver List</h1>
+        <div className="flex flex-row justify-between bg-red-400">
+          <h1 className="text-4xl font-bold"> Drivers </h1>
+          <button className="btn">
+            <Icon icon={"majesticons:plus"} className="text-xl" />
+            New Driver
+          </button>
+        </div>
         <div className="scroll flex h-full w-full flex-col gap-2 overflow-y-scroll pr-2">
           {error ? (
             <div className="text-red-500">{error}</div>
@@ -78,7 +85,13 @@ const page = () => {
 
       {/* Right Side */}
       <div className="flex h-full w-full flex-col gap-5 bg-blue-300 p-5">
-        <h1 className="w-full text-2xl font-bold">Vehicle List</h1>
+        <div className="flex flex-row justify-between bg-red-400">
+          <h1 className="text-4xl font-bold"> Driver Fleets </h1>
+          <button className="btn">
+            <Icon icon={"majesticons:plus"} className="text-xl" />
+            New Fleet
+          </button>
+        </div>
         <div className="flex flex-wrap gap-4">
           {selectedDriver && fleets.length === 0 ? (
             <div>No fleets assigned to this driver.</div>

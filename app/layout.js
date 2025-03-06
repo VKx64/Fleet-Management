@@ -22,11 +22,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex h-screen w-full flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-screen w-screen flex-col `}
       >
         <AuthProvider>
           <ConditionalTopNav />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow h-full">{children}</main>
         </AuthProvider>
       </body>
     </html>

@@ -1,18 +1,35 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import useDrivers from "@/hooks/useDrivers";
+import ModalDriver from "@/components/ModalDriver";
 
 const DriversList = ({ onSelectDriver }) => {
   const { drivers, loading, error } = useDrivers();
+  // State of modal
+  const [isModalDriverOpen, setIsModalDriverOpen] = useState(false);
+
+  // Function to open the modal
+  const openModal = () => {
+    setIsModalDriverOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalDriverOpen(false);
+  };
 
   return (
     <div className="h-full w-1/3 bg-red-500 p-4">
+
+      {/* Modal */}
+      <ModalDriver isOpen={isModalDriverOpen} onClose={closeModal} />
+
       <ul className="list gap-2">
         {/* List Header with Add Driver Button */}
         <div className="flex items-center justify-between bg-orange-400">
           <h1 className="text-start text-3xl font-bold">Drivers</h1>
-          <button className="btn whitespace-nowrap">
+          <button className="btn whitespace-nowrap" onClick={openModal}>
             <Icon icon="akar-icons:plus" />
             New Driver
           </button>

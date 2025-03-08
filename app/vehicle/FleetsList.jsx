@@ -3,13 +3,22 @@ import React, { useState } from "react";
 import useFleets from "@/hooks/useFleets";
 import { Icon } from "@iconify/react";
 import ModalFleet from "@/components/ModalFleet";
+import ModalFleetData from "@/components/ModalFleetData";
 
 const FleetsList = ({ driver }) => {
   const { fleets, loading, error } = useFleets(driver);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFleetDataModalOpen, setIsFleetDataModalOpen] = useState(false);
+  const [selectedFleet, setSelectedFleet] = useState(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openFleetDataModal = (fleet) => {
+    setSelectedFleet(fleet);
+    setIsFleetDataModalOpen(true);
+  };
+  const closeFleetDataModal = () => setIsFleetDataModalOpen(false);
 
   return (
     <div className="h-full w-full bg-blue-500 p-4 gap-2 flex flex-col">
@@ -41,17 +50,24 @@ const FleetsList = ({ driver }) => {
         {fleets.length === 0 ? (
           <p>No Fleets available</p>
         ) : (
-          fleets.map((fleet) => <Fleet key={fleet.id} fleet={fleet} />)
+          fleets.map((fleet) => (
+            <Fleet key={fleet.id} fleet={fleet} onViewFleet={openFleetDataModal} />
+          ))
         )}
       </div>
 
       {/* Modal for Adding Fleet */}
       <ModalFleet isOpen={isModalOpen} onClose={closeModal} selectedDriver={driver} />
+
+      {/* Modal for Viewing Fleet Data */}
+      {selectedFleet && (
+        <ModalFleetData isOpen={isFleetDataModalOpen} onClose={closeFleetDataModal} fleet={selectedFleet} />
+      )}
     </div>
   );
 };
 
-const Fleet = ({ fleet }) => {
+const Fleet = ({ fleet, onViewFleet }) => {
   const { plate, id, image } = fleet;
   const imageUrl = `${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/fleets/${id}/${image}`;
 
@@ -59,7 +75,7 @@ const Fleet = ({ fleet }) => {
     <div className="flex h-fit w-48 flex-col gap-2 overflow-clip rounded-xl bg-red-500 p-2">
       <img className="aspect-square w-full rounded-xl object-cover" src={imageUrl} alt="Fleet" />
       <h1 className="text-center text-2xl">{plate}</h1>
-      <button className="btn btn-soft">View Fleet</button>
+      <button className="btn btn-soft" onClick={() => onViewFleet(fleet)}>View Fleet</button>
     </div>
   );
 };

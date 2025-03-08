@@ -11,7 +11,6 @@ const TopNav = () => {
       {/* Navigation Bar */}
       <div className="flexrow flex h-full w-full justify-start">
         <NavItem icon={"cuida:home-outline"} name={"Home"} />
-        <NavItem icon={"cuida:map-pin-outline"} name={"Tracking"} />
         <NavItem icon={"cuida:key-outline"} name={"Vehicle"} />
         <NavItem icon={"cuida:clipboard-text-outline"} name={"Reports"} />
       </div>
